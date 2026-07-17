@@ -14,35 +14,48 @@
   <div class="header-inner">
     <div class="eyebrow">🐈‍⬛ WANO.O717 ARCHIVE</div>
     <h1>全圓佑 Threads 存檔庫</h1>
-    <p class="tagline">把每一次「幹全圓佑」的瞬間，都留下來。</p>
+    <p class="tagline">把每一次心動、每一次尖叫的瞬間，都留下來。</p>
     <div class="stats" id="stats"></div>
   </div>
 </header>
 
-<main>
-  <div class="controls">
+<button class="menu-toggle" id="menuToggle" aria-label="開啟分類選單">
+  <span class="menu-toggle-icon">☰</span>
+  <span class="menu-toggle-label">分類</span>
+</button>
+
+<div class="layout">
+  <main>
     <div class="search-row">
       <input type="text" id="searchInput" placeholder="搜尋貼文內容、日期(YYMMDD)、關鍵字…">
       <span class="search-count" id="searchCount"></span>
     </div>
 
-    <nav class="tabs" id="tabs"></nav>
-    <nav class="subtabs" id="subtabs" hidden></nav>
-
     <div class="sort-row">
       <label><input type="radio" name="sort" value="desc" checked> 最新優先</label>
       <label><input type="radio" name="sort" value="asc"> 最舊優先</label>
     </div>
-  </div>
 
-  <div class="card-grid" id="cardGrid"></div>
-  <div class="empty-state" id="emptyState" hidden>
-    <p>🐾 找不到符合的貼文，換個關鍵字試試？</p>
-  </div>
-  <div class="load-more-wrap">
-    <button id="loadMoreBtn" hidden>載入更多</button>
-  </div>
-</main>
+    <div class="active-filter" id="activeFilter" hidden></div>
+
+    <div class="card-grid" id="cardGrid"></div>
+    <div class="empty-state" id="emptyState" hidden>
+      <p>🐾 找不到符合的貼文，換個關鍵字試試？</p>
+    </div>
+    <div class="load-more-wrap">
+      <button id="loadMoreBtn" hidden>載入更多</button>
+    </div>
+  </main>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span>分類</span>
+      <button class="sidebar-close" id="sidebarClose" aria-label="關閉選單">✕</button>
+    </div>
+    <nav class="tabs" id="tabs"></nav>
+  </aside>
+</div>
 
 <footer class="site-footer">
   <p>本站為個人 Threads (@wano.o717) 貼文備份整理，內容連結回原平台。</p>
