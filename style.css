@@ -192,6 +192,32 @@ main{
   margin-bottom: 16px;
 }
 .active-filter[hidden]{ display: none; }
+
+.month-filter{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+.month-filter[hidden]{ display: none; }
+.month-chip{
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--panel);
+  color: var(--text-dim);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.month-chip:hover{ border-color: var(--mint); color: var(--text); }
+.month-chip.active{
+  background: var(--mint);
+  border-color: var(--mint);
+  color: #0e1c18;
+  font-weight: 700;
+}
 .active-filter button{
   background: none;
   border: none;

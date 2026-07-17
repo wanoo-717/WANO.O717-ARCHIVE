@@ -27,6 +27,7 @@ const UNKNOWN_YEAR = '年份不明';
 let state = {
   cat: 'all',
   year: 'all', // only meaningful when current cat has yearSub
+  month: 'all', // only meaningful when a specific year is selected
   query: '',
   sort: 'desc',
   page: 0,
@@ -93,6 +94,7 @@ function renderTabs() {
     btn.addEventListener('click', () => {
       state.cat = btn.dataset.cat;
       state.year = 'all';
+      state.month = 'all';
       state.page = 0;
       renderTabs();
       renderCards();
@@ -104,6 +106,7 @@ function renderTabs() {
       e.stopPropagation();
       state.cat = btn.dataset.cat;
       state.year = btn.dataset.year;
+      state.month = 'all';
       state.page = 0;
       renderTabs();
       renderCards();
@@ -121,6 +124,40 @@ function renderTabs() {
   });
 }
 
+function renderMonthFilter() {
+  const el = document.getElementById('monthFilter');
+  const catConfig = CATEGORIES.find(c => c.key === state.cat);
+  const showMonths = catConfig && catConfig.yearSub && state.year !== 'all' && state.year !== UNKNOWN_YEAR;
+  if (!showMonths) {
+    el.hidden = true;
+    el.innerHTML = '';
+    return;
+  }
+  const pool = POSTS.filter(p => p.cat === state.cat && String(p.year) === state.year);
+  const months = [...new Set(pool.filter(p => p.month).map(p => p.month))].sort((a, b) => a - b);
+  const noMonthCount = pool.filter(p => !p.month).length;
+
+  let html = `<button class="month-chip ${state.month === 'all' ? 'active' : ''}" data-month="all">全部</button>`;
+  months.forEach(m => {
+    const count = pool.filter(p => p.month === m).length;
+    html += `<button class="month-chip ${state.month === String(m) ? 'active' : ''}" data-month="${m}">${m}月 (${count})</button>`;
+  });
+  if (noMonthCount > 0) {
+    html += `<button class="month-chip ${state.month === 'unknown' ? 'active' : ''}" data-month="unknown">月份不明 (${noMonthCount})</button>`;
+  }
+  el.innerHTML = html;
+  el.hidden = false;
+
+  el.querySelectorAll('[data-month]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.month = btn.dataset.month;
+      state.page = 0;
+      renderMonthFilter();
+      renderCards();
+    });
+  });
+}
+
 function renderActiveFilter() {
   const el = document.getElementById('activeFilter');
   if (state.cat === 'all') {
@@ -133,10 +170,14 @@ function renderActiveFilter() {
   if (state.year !== 'all') {
     label += ' / ' + (state.year === UNKNOWN_YEAR ? state.year : state.year + ' 年');
   }
+  if (state.month !== 'all') {
+    label += ' / ' + (state.month === 'unknown' ? '月份不明' : state.month + ' 月');
+  }
   el.innerHTML = `目前分類：${label} <button id="clearFilterBtn">✕ 清除</button>`;
   document.getElementById('clearFilterBtn').addEventListener('click', () => {
     state.cat = 'all';
     state.year = 'all';
+    state.month = 'all';
     state.page = 0;
     renderTabs();
     renderActiveFilter();
@@ -150,7 +191,12 @@ function getFiltered() {
   if (state.cat !== 'all') list = list.filter(p => p.cat === state.cat);
   const catConfig = CATEGORIES.find(c => c.key === state.cat);
   if (catConfig && catConfig.yearSub && state.year !== 'all') {
-    list = list.filter(p => (p.year || UNKNOWN_YEAR) === state.year);
+    list = list.filter(p => String(p.year || UNKNOWN_YEAR) === state.year);
+    if (state.month === 'unknown') {
+      list = list.filter(p => !p.month);
+    } else if (state.month !== 'all') {
+      list = list.filter(p => String(p.month) === state.month);
+    }
   }
   if (state.query.trim()) {
     const q = state.query.trim().toLowerCase();
@@ -175,6 +221,7 @@ function escapeHtml(str) {
 
 function renderCards() {
   renderActiveFilter();
+  renderMonthFilter();
   const filtered = getFiltered();
   const grid = document.getElementById('cardGrid');
   const emptyState = document.getElementById('emptyState');
