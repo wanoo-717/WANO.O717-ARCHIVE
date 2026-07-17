@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全圓佑 Threads 存檔庫</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg-noise"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="eyebrow">🐈‍⬛ WANO.O717 ARCHIVE</div>
+    <h1>全圓佑 Threads 存檔庫</h1>
+    <p class="tagline">把每一次「幹全圓佑」的瞬間，都留下來。</p>
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+
+<main>
+  <div class="controls">
+    <div class="search-row">
+      <input type="text" id="searchInput" placeholder="搜尋貼文內容、日期(YYMMDD)、關鍵字…">
+      <span class="search-count" id="searchCount"></span>
+    </div>
+
+    <nav class="tabs" id="tabs"></nav>
+    <nav class="subtabs" id="subtabs" hidden></nav>
+
+    <div class="sort-row">
+      <label><input type="radio" name="sort" value="desc" checked> 最新優先</label>
+      <label><input type="radio" name="sort" value="asc"> 最舊優先</label>
+    </div>
+  </div>
+
+  <div class="card-grid" id="cardGrid"></div>
+  <div class="empty-state" id="emptyState" hidden>
+    <p>🐾 找不到符合的貼文，換個關鍵字試試？</p>
+  </div>
+  <div class="load-more-wrap">
+    <button id="loadMoreBtn" hidden>載入更多</button>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>本站為個人 Threads (@wano.o717) 貼文備份整理，內容連結回原平台。</p>
+</footer>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
